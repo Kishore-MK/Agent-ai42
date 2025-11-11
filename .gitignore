@@ -7,10 +7,11 @@
 .idea/workspace.xml
 .idea/usage.statistics.xml
 .idea/shelf
-
+secrets.ts
+wallet.json
 # deps
 node_modules/
-
+src/mcpserver/
 # env
 .env
 .env.production
