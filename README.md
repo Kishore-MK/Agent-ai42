@@ -51,6 +51,16 @@ Before any agent action, user intent is recorded on Solana blockchain with:
 7. Intent executed on-chain with Ed25519 verification
 8. Reputation updated based on success/failure
 
+
+
+### Local Development
+
+Clone the repository.
+Start agent in development mode: `npm install && npm run dev`. 
+Test merchant server on localhost:3001 for checkout flows.
+Create a solana keypair for the agent.
+  
+
 ### Revocability and Expiration
 
 Intents can be revoked by users before execution. 
@@ -418,67 +428,7 @@ LangGraph checkpointer stores conversation state in memory with SQLite persisten
 Message history trimmed after 50 messages to prevent context overflow.
 Tool results cached for duplicate requests within session.
 Agent state reset on explicit user command or session timeout.
-
-## Deployment
-
-### Local Development
-
-Run Solana test validator: `solana-test-validator`. 
-Deploy TAP registry program with Anchor: `anchor deploy`. 
-Fund wallet with test SOL: `solana airdrop 2`. 
-Start agent in development mode: `npm run dev`. 
-Test merchant server on localhost:3001 for checkout flows.
-
-### Production Deployment
-
-Deploy agent to VPS or cloud instance with Node.js runtime. 
-Use PM2 or systemd for process management and auto-restart. 
-Configure Solana mainnet-beta RPC endpoint with rate limits. 
-Secure environment variables with secrets management (e.g., AWS Secrets Manager). 
-Enable HTTPS for webhook endpoints if exposing agent API. 
-Monitor transaction failures and reputation changes via logging. 
-Set up database backups with scheduled snapshots. 
-Implement rate limiting for API endpoints to prevent abuse.
-
-### Mainnet Considerations
-
-Fund production wallet with sufficient SOL for transaction fees. 
-Register agent on mainnet TAP registry with verified identity.
-Use priority fees for faster transaction confirmation during congestion. 
-Implement transaction retry logic with exponential backoff. 
-Monitor agent reputation score and investigate negative deltas. 
-Validate merchant signatures rigorously before executing intents. 
-Enable transaction simulation before submission to catch errors.
-
-## Testing
-
-### Unit Tests
-
-Test intent hash generation uniqueness and format. 
-Verify Ed25519 signature creation and verification. 
-Validate PDA derivation matches expected addresses. 
-Test tool parameter parsing and schema validation. 
-Mock Solana program calls for isolated testing.
-
-
-### Integration Tests
-
-Test full intent recording and execution flow on localnet. 
-Verify browser automation with test merchant endpoints. 
-Test database persistence across agent restarts. 
-Validate X402 payment flow with mock payment server. 
-Test multi-tool workflows with intent injection.
-
-
-### End-to-End Tests
-
-Simulate complete purchase flow from user message to order confirmation. 
-Test intent expiration and revocation scenarios. 
-Verify reputation updates after successful and failed actions. 
-Test concurrent intent executions with race conditions. 
-Validate error recovery and retry mechanisms.
-
-
+ 
 ## Contributing
 
 Fork repository and create feature branch. 
