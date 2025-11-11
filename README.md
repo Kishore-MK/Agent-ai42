@@ -52,14 +52,107 @@ Before any agent action, user intent is recorded on Solana blockchain with:
 8. Reputation updated based on success/failure
 
 
+## Environment Configuration
 
-### Local Development
+### Required Variables
 
-Clone the repository.
-Start agent in development mode: `npm install && npm run dev`. 
-Test merchant server on localhost:3001 for checkout flows.
-Create a solana keypair for the agent.
-  
+`SOLANA_RPC_URL`: Solana cluster RPC endpoint (mainnet-beta, devnet, or localhost).
+
+`SOLANA_WALLET_SECRET`: User wallet private key in Base58 format for transaction signing.
+
+`ED25519_PRIVATE_KEY`: Agent Ed25519 private key (64 bytes) in Base58 for signature generation.
+
+`ED25519_PUBLIC_KEY`: Agent Ed25519 public key in Base58 for verification.
+
+`GOOGLE_API_KEY`: Google Gemini API key for model inference.
+
+`AGENT_PDA`: Registered agent PDA address on Solana (optional, can register via tool).
+
+### Optional Variables
+
+`DATABASE_PATH`: SQLite database file path (default: ./agent.db).
+
+`INTENT_EXPIRATION`: Default intent expiration in seconds (default: 3600).
+
+`MAX_AMOUNT_LAMPORTS`: Default maximum amount authorization (default: 1000000).
+
+`COMPUTE_UNIT_LIMIT`: Solana compute unit limit for transactions (default: 200000).
+
+## Installation and Setup
+
+### Prerequisites
+
+Node.js 20+ with ES modules support. Solana CLI tools for wallet generation and program deployment. 
+Anchor framework 0.32+ for Solana program interaction. 
+SQLite3 for database persistence. 
+Playwright browsers installed via `npx playwright install`.
+
+### Installation Steps
+
+Clone repository and install dependencies via `npm install`. 
+Generate Solana wallet: `solana-keygen new -o wallet.json`. Generate Ed25519 keypair for agent authentication. 
+Deploy TAP registry program to Solana cluster. 
+Create `.env` file with required variables. 
+Initialize database schema via migration scripts. 
+Register agent on-chain using `register_agent` tool or direct program call.
+
+### Running the Agent
+
+Development mode: `npm run dev` for auto-reload with tsx.
+Build: `npm run build` compiles TypeScript to JavaScript.
+Production: `npm start` runs compiled code.
+Console interface starts with welcome banner and prompt.
+Type messages to interact with agent, agent responds with tool execution and intent verification.
+
+## Usage Examples
+
+### Product Purchase Flow
+
+User: "buy this product http://localhost:3001/product/1"
+
+Agent records intent on blockchain with product URL action. 
+Intent PDA: `ABC123...` generated and stored. 
+Agent extracts product details using Playwright with authenticated headers. 
+Product found: "Wireless Headphones - $299". 
+Agent adds to cart and navigates to checkout. 
+Completes checkout with intent PDA in headers. 
+Merchant validates intent signature and processes order. 
+Order ID: `ORD-789` returned with merchant signature. 
+Agent executes intent on-chain with merchant proof. 
+Intent marked as executed in database. 
+Reputation updated: +10 points for successful purchase.
+
+
+### Intent Verification
+
+User: "verify my last intent"
+
+Agent queries database for most recent intent PDA. 
+Calls `verify_intent` tool with intent PDA. 
+On-chain verification checks expiration, user signature, and status. 
+Returns: "Intent valid, expires in 2847 seconds, status: pending". 
+Agent reports verification result to user.
+
+
+### Agent Registration
+
+User: "register a new agent with pubkey XYZ123..."
+
+Agent calls `register_agent` tool with provided public key.
+Creates agent ID byte array from public key.
+Derives agent PDA from program address and agent ID.
+Records agent on blockchain with JWK and metadata URI.
+Stores agent in database with initial reputation score 0.
+Returns agent PDA: `DEF456...` for future use.
+
+### Reputation Query
+
+User: "what's my agent's reputation score?"
+
+Agent retrieves agent PDA from environment or database.
+Calls `get_agent_score` tool with agent PDA.
+On-chain view instruction returns current score.
+Agent responds: "Your reputation score is 150 points based on 15 successful transactions".
 
 ### Revocability and Expiration
 
@@ -218,107 +311,6 @@ On-chain reputation scores track agent trustworthiness.
 Registry authority can update scores with delta and reason. 
 Negative deltas for failed actions, positive for successful completions. 
 Scores queryable by any party for trust assessment. Reputation influences agent selection and authorization limits.
-
-## Environment Configuration
-
-### Required Variables
-
-`SOLANA_RPC_URL`: Solana cluster RPC endpoint (mainnet-beta, devnet, or localhost).
-
-`SOLANA_WALLET_SECRET`: User wallet private key in Base58 format for transaction signing.
-
-`ED25519_PRIVATE_KEY`: Agent Ed25519 private key (64 bytes) in Base58 for signature generation.
-
-`ED25519_PUBLIC_KEY`: Agent Ed25519 public key in Base58 for verification.
-
-`GOOGLE_API_KEY`: Google Gemini API key for model inference.
-
-`AGENT_PDA`: Registered agent PDA address on Solana (optional, can register via tool).
-
-### Optional Variables
-
-`DATABASE_PATH`: SQLite database file path (default: ./agent.db).
-
-`INTENT_EXPIRATION`: Default intent expiration in seconds (default: 3600).
-
-`MAX_AMOUNT_LAMPORTS`: Default maximum amount authorization (default: 1000000).
-
-`COMPUTE_UNIT_LIMIT`: Solana compute unit limit for transactions (default: 200000).
-
-## Installation and Setup
-
-### Prerequisites
-
-Node.js 20+ with ES modules support. Solana CLI tools for wallet generation and program deployment. 
-Anchor framework 0.32+ for Solana program interaction. 
-SQLite3 for database persistence. 
-Playwright browsers installed via `npx playwright install`.
-
-### Installation Steps
-
-Clone repository and install dependencies via `npm install`. 
-Generate Solana wallet: `solana-keygen new -o wallet.json`. Generate Ed25519 keypair for agent authentication. 
-Deploy TAP registry program to Solana cluster. 
-Create `.env` file with required variables. 
-Initialize database schema via migration scripts. Register agent on-chain using `register_agent` tool or direct program call.
-
-### Running the Agent
-
-Development mode: `npm run dev` for auto-reload with tsx.
-Build: `npm run build` compiles TypeScript to JavaScript.
-Production: `npm start` runs compiled code.
-Console interface starts with welcome banner and prompt.
-Type messages to interact with agent, agent responds with tool execution and intent verification.
-
-## Usage Examples
-
-### Product Purchase Flow
-
-User: "buy this product http://localhost:3001/product/1"
-
-Agent records intent on blockchain with product URL action. 
-Intent PDA: `ABC123...` generated and stored. 
-Agent extracts product details using Playwright with authenticated headers. 
-Product found: "Wireless Headphones - $299". 
-Agent adds to cart and navigates to checkout. 
-Completes checkout with intent PDA in headers. 
-Merchant validates intent signature and processes order. 
-Order ID: `ORD-789` returned with merchant signature. 
-Agent executes intent on-chain with merchant proof. 
-Intent marked as executed in database. 
-Reputation updated: +10 points for successful purchase.
-
-
-### Intent Verification
-
-User: "verify my last intent"
-
-Agent queries database for most recent intent PDA. 
-Calls `verify_intent` tool with intent PDA. 
-On-chain verification checks expiration, user signature, and status. 
-Returns: "Intent valid, expires in 2847 seconds, status: pending". 
-Agent reports verification result to user.
-
-
-### Agent Registration
-
-User: "register a new agent with pubkey XYZ123..."
-
-Agent calls `register_agent` tool with provided public key.
-Creates agent ID byte array from public key.
-Derives agent PDA from program address and agent ID.
-Records agent on blockchain with JWK and metadata URI.
-Stores agent in database with initial reputation score 0.
-Returns agent PDA: `DEF456...` for future use.
-
-### Reputation Query
-
-User: "what's my agent's reputation score?"
-
-Agent retrieves agent PDA from environment or database.
-Calls `get_agent_score` tool with agent PDA.
-On-chain view instruction returns current score.
-Agent responds: "Your reputation score is 150 points based on 15 successful transactions".
 
 ## API Reference
 
