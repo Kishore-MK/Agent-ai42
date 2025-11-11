@@ -31,7 +31,6 @@ async function callToolsWithIntent(state: typeof MessagesAnnotation.State) {
     const spinner = ora('Creating blockchain intent...').start();
     
     try {
-      // Record intent first
       const intentResult = await recordIntentTool.invoke({
         agentPDA: "GJvsD7GG61VC8BMDVyefVEhQQp2o2pT8kZq4BCGeDx1W",
         maxAmount: 1000000,
@@ -74,7 +73,7 @@ function shouldContinue(state: typeof MessagesAnnotation.State) {
   return lastMessage.tool_calls?.length ? "tools" : "__end__";
 }
 
-// Build graph
+
 const workflow = new StateGraph(MessagesAnnotation)
   .addNode("agent", async (state) => {
     const response = await model.invoke(state.messages);
@@ -96,7 +95,7 @@ console.clear();
 console.log(
   boxen(
     chalk.bold.cyan('🤖 AI42 Agent Chat\n') +
-    chalk.gray('Your autonomous agent with intents powered by Trusted Agent Protocol\n') +
+    chalk.gray('Your autonomous agent with verified intent trials powered by Trusted Agent Protocol\n') +
     chalk.yellow('Type your message or "exit" to quit'),
     {
       padding: 1,

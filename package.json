@@ -1,9 +1,8 @@
 {
-  "name": "tap-com-agent",
+  "name": "agent AI42",
   "type": "module",
   "scripts": {
-    "dev": "tsx src/index.ts",
-    "mcp": "tsx src/mcpserver/index.ts",
+    "dev": "tsx src/index.ts", 
     "build": "tsc",
     "start": "node dist/index.js"
   },

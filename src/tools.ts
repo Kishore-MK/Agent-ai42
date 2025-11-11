@@ -68,14 +68,16 @@ const extractProductTool = tool(
   }
 );
 const completeCheckoutTool = tool(
-  async ({ productUrl }: { productUrl: string }) => {
-    return await toolCompleteCheckout(productUrl);
+  async ({ productUrl,intentPDA }: { productUrl: string , intentPDA:string}) => {
+    console.log(productUrl,intentPDA);
+    return await toolCompleteCheckout(productUrl,intentPDA);
   },
   {
     name: "complete_checkout",
     description: "Complete a purchase checkout process with TAP authentication",
     schema: z.object({
       productUrl: z.string().describe("The product page URL"),
+      intentPDA: z.string().optional().describe("The Intent PDA injected automatically")
     }),
   }
 );

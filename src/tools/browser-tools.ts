@@ -54,6 +54,7 @@ import {
   // Tool: Complete checkout
   export async function toolCompleteCheckout(
     productUrl: string,
+    intentPDA: string
   ): Promise<OrderInfo> {
     const keys = getEd25519Keys();
     const { authority, path, baseUrl } = parseUrlComponents(productUrl);
@@ -83,6 +84,7 @@ import {
     const headers = {
       "Signature-Input": signatureInput,
       Signature: signature,
+      intentsignature:intentPDA
     };
   
     return await completeCheckout(productUrl,cartUrl ,checkoutUrl , headers);
