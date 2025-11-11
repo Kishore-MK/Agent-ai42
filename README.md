@@ -433,7 +433,8 @@ Test merchant server on localhost:3001 for checkout flows.
 
 Deploy agent to VPS or cloud instance with Node.js runtime. 
 Use PM2 or systemd for process management and auto-restart. 
-Configure Solana mainnet-beta RPC endpoint with rate limits. Secure environment variables with secrets management (e.g., AWS Secrets Manager). 
+Configure Solana mainnet-beta RPC endpoint with rate limits. 
+Secure environment variables with secrets management (e.g., AWS Secrets Manager). 
 Enable HTTPS for webhook endpoints if exposing agent API. 
 Monitor transaction failures and reputation changes via logging. 
 Set up database backups with scheduled snapshots. 
@@ -443,34 +444,56 @@ Implement rate limiting for API endpoints to prevent abuse.
 
 Fund production wallet with sufficient SOL for transaction fees. 
 Register agent on mainnet TAP registry with verified identity.
- Use priority fees for faster transaction confirmation during congestion. 
- Implement transaction retry logic with exponential backoff. 
- Monitor agent reputation score and investigate negative deltas. 
- Validate merchant signatures rigorously before executing intents. 
- Enable transaction simulation before submission to catch errors.
+Use priority fees for faster transaction confirmation during congestion. 
+Implement transaction retry logic with exponential backoff. 
+Monitor agent reputation score and investigate negative deltas. 
+Validate merchant signatures rigorously before executing intents. 
+Enable transaction simulation before submission to catch errors.
 
 ## Testing
 
 ### Unit Tests
 
-Test intent hash generation uniqueness and format. Verify Ed25519 signature creation and verification. Validate PDA derivation matches expected addresses. Test tool parameter parsing and schema validation. Mock Solana program calls for isolated testing.
+Test intent hash generation uniqueness and format. 
+Verify Ed25519 signature creation and verification. 
+Validate PDA derivation matches expected addresses. 
+Test tool parameter parsing and schema validation. 
+Mock Solana program calls for isolated testing.
+
 
 ### Integration Tests
 
-Test full intent recording and execution flow on localnet. Verify browser automation with test merchant endpoints. Test database persistence across agent restarts. Validate X402 payment flow with mock payment server. Test multi-tool workflows with intent injection.
+Test full intent recording and execution flow on localnet. 
+Verify browser automation with test merchant endpoints. 
+Test database persistence across agent restarts. 
+Validate X402 payment flow with mock payment server. 
+Test multi-tool workflows with intent injection.
+
 
 ### End-to-End Tests
 
-Simulate complete purchase flow from user message to order confirmation. Test intent expiration and revocation scenarios. Verify reputation updates after successful and failed actions. Test concurrent intent executions with race conditions. Validate error recovery and retry mechanisms.
+Simulate complete purchase flow from user message to order confirmation. 
+Test intent expiration and revocation scenarios. 
+Verify reputation updates after successful and failed actions. 
+Test concurrent intent executions with race conditions. 
+Validate error recovery and retry mechanisms.
+
 
 ## Contributing
 
-Fork repository and create feature branch. Follow TypeScript strict mode and ESLint rules. Add unit tests for new tools or utilities. Update README with new tool descriptions and usage examples. Test on localnet before submitting pull request. Include example .env.example for new environment variables.
+Fork repository and create feature branch. 
+Follow TypeScript strict mode and ESLint rules. 
+Add unit tests for new tools or utilities. 
+Update README with new tool descriptions and usage examples. 
+Test on localnet before submitting pull request. 
+Include .env.example for new environment variables.
+
 
 ## License
 
 MIT License - see LICENSE file for details.
 
+
 ## Support
 
-GitHub Issues: Report bugs and feature requests at repository issues page. Documentation: Full API reference and guides at docs.ai42.xyz. Discord Community: Join AI42 Discord for discussions and support. Email: Contact team@ai42.xyz for enterprise inquiries.
+GitHub Issues: Report bugs and feature requests at repository issues page.
