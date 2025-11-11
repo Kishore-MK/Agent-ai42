@@ -18,6 +18,7 @@ import {
 import { PublicKey } from "@solana/web3.js";
 import { DynamicStructuredTool, tool } from "@langchain/core/tools";
 import { getAgentFromDBTool,   saveIntentToDBTool, saveAgentToDBTool, updateAgentInDBTool, getIntentFromDBTool, updateIntentStatusInDBTool } from "./tools/databaseTools.js";
+import { makeX402PaymentTool } from "./tools/x402-payment-tool.js";
 
 dotenv.config(); 
  
@@ -336,6 +337,8 @@ export const tools: DynamicStructuredTool[] = [
     updateAgentInDBTool,
     saveIntentToDBTool,
     getIntentFromDBTool,
-    updateIntentStatusInDBTool
+    updateIntentStatusInDBTool,
+    // x402
+    makeX402PaymentTool,
   ];
   

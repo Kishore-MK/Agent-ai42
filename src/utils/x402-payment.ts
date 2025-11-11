@@ -2,7 +2,7 @@
 import { wrapFetchWithPayment, createSigner, Signer } from 'x402-fetch'; 
 import {  PaymentClient, PaymentClientConfig, PaymentInfo } from '../types.js';
  
- const signer = createSigner("solana-devnet","vvevebbbbbbbbbb")
+ 
 interface ServerPaymentConfig extends PaymentClientConfig {
     signer: Signer;
   }
